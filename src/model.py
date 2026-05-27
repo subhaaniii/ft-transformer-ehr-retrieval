@@ -1,7 +1,7 @@
 """
 model.py
 
-FTTransformerEHREncoder added (Run 10):
+FTTransformerEHREncoder:
     Feature Tokenizer + Transformer for tabular EHR data.
     Gorishniy et al. "Revisiting Deep Learning Models for Tabular Data" (NeurIPS 2021).
     Drop-in replacement for EHREncoder in DualEncoder.
@@ -12,7 +12,7 @@ model.py
 Dual-encoder architecture for cross-modal CXR ↔ EHR contrastive learning.
 
 CXR encoder:
-    DenseNet-121 pretrained on MIMIC-CXR (torchxrayvision)
+    DenseNet-121 pretrained on chest X-ray data via torchxrayvision
     → feature extractor output (B, 1024, 7, 7)
     → global average pool → (B, 1024)
     → ProjectionHead(1024, hidden=512, out=128) → L2 normalize
@@ -24,23 +24,15 @@ Both encoders produce L2-normalized 128-dim embeddings.
 Cosine similarity is then a dot product between embeddings ∈ [-1, 1].
 
 ──────────────────────────────────────────────────────────────────────────────
-Why torchxrayvision DenseNet-121 instead of ImageNet ResNet-50:
+CXR encoder:
+    DenseNet-121 pretrained on chest X-ray data via torchxrayvision
+    -> feature extractor -> global average pooling -> projection head
 
-ImageNet ResNet-50 encodes natural image statistics (RGB textures, object
-shapes, scene semantics). MIMIC-CXR images are single-channel attenuation
-maps of thoracic anatomy — a fundamentally different domain. The ResNet-50
-backbone has never seen pleural effusion, cardiomegaly, or a pneumothorax
-during pretraining. The 4.8× random R@50 at epoch 0 was useful but represented
-accidental correlation between low-level texture features and gross pathology.
+EHR encoder:
+    MLP or FT-Transformer encoder for transformed tabular features
 
-torchxrayvision DenseNet-121 pretrained on MIMIC-CXR:
-  - Trained with contrastive/classification objectives directly on chest films
-  - Features encode radiological patterns: lung field density, cardiac silhouette
-    size, pleural margins, infiltrate distribution
-  - CheXpert label prediction residuals live in the feature space we're aligning
-    against, so the cross-modal alignment task is closer to the backbone's
-    pretraining objective
-  - Expected to start at substantially higher than 4.8× random (untested)
+Both encoders produce L2-normalized embeddings for contrastive retrieval.
+
 
 Input normalization contract:
     The transform pipeline (cxr_transforms.py with backbone="xrv") maps
@@ -425,10 +417,10 @@ class FTTransformerEHREncoder(nn.Module):
 # ---------------------------------------------------------------------------
 
 class DualEncoder(nn.Module):
-    # Wraps CXREncoder (DenseNet-121 / MIMIC-CXR pretrained), EHREncoder (MLP),
+    # Wraps CXREncoder, EHREncoder, and optional text projection heads.
     # and two TextProjectionHeads (ClinicalBERT 768 -> embed_dim).
     #
-    # Run 6 text-pivot forward returns 4 embeddings:
+    # Optional text-pivot forward returns 4 embeddings:
     #   z_cxr     (B, embed_dim) -- CXR image → DenseNet → projection → L2-norm
     #   z_report  (B, embed_dim) -- CXR radiology report → ClinicalBERT CLS → text proj → L2-norm
     #   z_ehr     (B, embed_dim) -- EHR features → MLP → projection → L2-norm
@@ -437,12 +429,12 @@ class DualEncoder(nn.Module):
     # Args:
     #   ehr_input_dim:    number of EHR feature columns (e.g., 29)
     #   embed_dim:        shared contrastive embedding dimension (default 128)
-    #   pretrained:       load torchxrayvision MIMIC-CXR weights for CXR backbone.
+    #   pretrained:       load torchxrayvision chest X-ray weights for CXR backbone.
     #                     Set False when restoring from a full training checkpoint.
     #   xrv_weights:      torchxrayvision weight string (default: mimic_nb).
     #   text_hidden:      hidden dim for TextProjectionHead (default 256).
     #                     ClinicalBERT is always frozen (embeddings pre-computed offline).
-    #   ehr_encoder_type: "mlp" (default, Phase 5 baseline) or "ftt" (FTTransformer).
+    #   ehr_encoder_type: "mlp" (baseline MLP encoder) or "ftt" (FTTransformer).
     #                     "mlp"  → EHREncoder (3-layer MLP, ~170K params)
     #                     "ftt"  → FTTransformerEHREncoder (d_token=64, 2 layers, ~78K params)
     #                     NOTE: "ftt" and "mlp" checkpoints are NOT compatible —
@@ -505,9 +497,9 @@ class DualEncoder(nn.Module):
         report_emb:  torch.Tensor | None = None,
         summary_emb: torch.Tensor | None = None,
     ) -> tuple[torch.Tensor, ...]:
-        # Run 6 (text-pivot mode): all 4 args provided.
+        # Text-pivot mode: all 4 args provided.
         #   Returns (z_cxr, z_report, z_ehr, z_summary) -- 4-tuple.
-        # Run 5 / ablation (no text): report_emb and summary_emb are None.
+        # Standard image-EHR mode: report_emb and summary_emb are None.
         #   Returns (z_cxr, z_ehr) -- 2-tuple (backward compat with InfoNCELoss).
         z_cxr = self.encode_cxr(cxr)
         z_ehr = self.encode_ehr(ehr)

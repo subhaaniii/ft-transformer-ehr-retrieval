@@ -30,12 +30,13 @@ class EHRTransformer:
     def transform_dataframe(self, df: pd.DataFrame) -> Tuple[pd.DataFrame, List[str]]:
         """
         Returns:
-            transformed_df: contains subject_id + transformed features
+            transformed_df: contains sample_id + transformed features
+
             feature_cols: ordered feature column names
         """
         out = pd.DataFrame()
-        if "subject_id" in df.columns:
-            out["subject_id"] = df["subject_id"]
+        if "sample_id" in df.columns:
+            out["sample_id"] = df["sample_id"]
 
         feature_cols: List[str] = []
 

@@ -97,13 +97,13 @@ def get_cxr_transforms(
         if stats_path is None:
             raise ValueError(
                 "stats_path is required when backbone='imagenet'.\n"
-                "Run scripts.fit_cxr_transforms to generate cxr_transform_stats.json."
+                "Generate cxr_transform_stats.json before using this option."
             )
         stats_path = Path(stats_path)
         if not stats_path.exists():
             raise FileNotFoundError(
                 f"CXR normalization stats not found: {stats_path}\n"
-                "Run scripts.fit_cxr_transforms first."
+                "Fit CXR transform statistics before using this option."
             )
         with open(stats_path, "r", encoding="utf-8") as f:
             stats = json.load(f)

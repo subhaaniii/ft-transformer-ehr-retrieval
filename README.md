@@ -48,3 +48,11 @@ The training script reports:
 pip install -r requirements.txt
 python src/train.py --ehr-encoder ftt
 python src/train.py --ehr-encoder mlp
+
+## Documentation
+
+- [Method overview](docs/method_overview.md)
+- [Experiment design](docs/experiment_design.md)
+- [Metric explanation](docs/metric_explanation.md)
+- [Reproducibility notes](docs/reproducibility_notes.md)
+- [Controlled experiment results](experiments/results_summary.md)

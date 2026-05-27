@@ -1,0 +1,14 @@
+{
+  "numeric_cols": [
+    "age",
+    "num_admissions",
+    "num_labs"
+  ],
+  "binary_cols": [
+    "has_diabetes",
+    "has_hypertension"
+  ],
+  "categorical_cols": [
+    "sex"
+  ]
+}

@@ -115,6 +115,7 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--cxr-csv", type=Path, default=Path("data_demo/demo_cxr_samples.csv"))
     p.add_argument("--ehr-csv", type=Path, default=Path("data_demo/demo_ehr_profiles.csv"))
     p.add_argument("--image-path-column", type=str,  default="image_path")
+    p.add_argument("--id-column", type=str, default="sample_id")
     p.add_argument("--cxr-cache-dir",     type=Path, default=None)
     p.add_argument("--output-dir",        type=Path, default=None)
     p.add_argument("--checkpoint-dir",    type=Path, default=None)
@@ -503,6 +504,23 @@ def main() -> None:
 
     cxr_df = pd.read_csv(cxr_path)
     ehr_df = pd.read_csv(ehr_path)
+
+    if args.id_column not in cxr_df.columns:
+        raise RuntimeError(
+            f"CXR CSV missing ID column '{args.id_column}'. "
+            f"Available columns: {cxr_df.columns.tolist()}"
+        )
+
+    if args.id_column not in ehr_df.columns:
+        raise RuntimeError(
+            f"EHR CSV missing ID column '{args.id_column}'. "
+            f"Available columns: {ehr_df.columns.tolist()}"
+        )
+
+    if args.id_column != "sample_id":
+        cxr_df = cxr_df.rename(columns={args.id_column: "sample_id"})
+        ehr_df = ehr_df.rename(columns={args.id_column: "sample_id"})
+
     cxr_df["sample_id"] = cxr_df["sample_id"].astype(int)
     ehr_df["sample_id"] = ehr_df["sample_id"].astype(int)
     paired_samples = set(cxr_df["sample_id"]) & set(ehr_df["sample_id"])
@@ -615,6 +633,7 @@ def main() -> None:
         "processed_dir":     str(processed_dir),
         "cxr_samples_csv":   str(cxr_path),
         "image_path_column": args.image_path_column,
+        "id_column": args.id_column,
         "split_source":      split_src,
         "ehr_transform":     ehr_src,
         "ehr_feature_cols":  feature_cols,

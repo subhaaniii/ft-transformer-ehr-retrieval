@@ -27,6 +27,14 @@ This repository demonstrates:
 
 Both methods use the same symmetric InfoNCE contrastive loss and retrieval evaluation pipeline.
 
+## Related Work
+
+This repository includes an FT-Transformer-style encoder for tabular EHR-like features. The main inspiration is the FT-Transformer approach studied by Gorishniy et al. in *Revisiting Deep Learning Models for Tabular Data*, where feature tokenization and Transformer layers were evaluated as a strong deep learning baseline for tabular prediction tasks.
+
+The broader idea of using Transformer-based architectures for tabular data is also related to TabTransformer, which applies self-attention to learn contextual embeddings for categorical features.
+
+These works motivate the comparison in this repository: a simple MLP encoder is tested against a Transformer-style tabular encoder under controlled retrieval conditions.
+
 ## Dataset Setup
 
 The public repository uses controlled synthetic multimodal data.
@@ -138,6 +146,10 @@ python src/train.py --ehr-encoder ftt --epochs 10 --batch-size 32 --num-workers 
 - [Reproducibility notes](docs/reproducibility_notes.md)
 - [Controlled experiment results](experiments/results_summary.md)
 
+## References
+
+- Yury Gorishniy, Ivan Rubachev, Valentin Khrulkov, and Artem Babenko. *Revisiting Deep Learning Models for Tabular Data*. NeurIPS 2021.
+- Xin Huang, Ashish Khetan, Milan Cvitkovic, and Zohar Karnin. *TabTransformer: Tabular Data Modeling Using Contextual Embeddings*. arXiv, 2020.
 
 ## Limitations
 

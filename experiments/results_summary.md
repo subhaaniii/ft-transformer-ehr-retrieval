@@ -53,6 +53,23 @@ Lift over random is reported because retrieval difficulty changes with candidate
 
 ## 5. Results
 
+## Pilot sample-size analysis: 500 samples
+
+Before running the larger 1000- and 2000-sample benchmarks, I first ran a smaller 500-sample pilot study. The goal was to verify that the training pipeline, retrieval metrics, and synthetic data modes behaved as expected.
+
+These runs are not treated as the main benchmark. They are included to show the progression from a small controlled pilot to larger sample-size experiments.
+
+| Setup | Samples | Encoder | R@1 | R@5 | R@10 | R@50 | Lift@50 | Pos Sim | Train Loss |
+|---|---:|---|---:|---:|---:|---:|---:|---:|---:|
+| Linear | 500 | MLP | 0.04 | 0.15 | 0.34 | 0.94 | 1.88x | 0.3630 | 3.0041 |
+| Linear | 500 | FT-Transformer | 0.04 | 0.17 | 0.33 | 0.97 | 1.94x | 0.4992 | 2.8632 |
+| Interaction | 500 | MLP | 0.03 | 0.13 | 0.26 | 0.83 | 1.66x | 0.2264 | 3.1512 |
+| Interaction | 500 | FT-Transformer | 0.03 | 0.09 | 0.24 | 0.90 | 1.80x | 0.2902 | 2.9687 |
+| Noisy | 500 | MLP | 0.02 | 0.08 | 0.22 | 0.74 | 1.48x | 0.1293 | 3.2743 |
+| Noisy | 500 | FT-Transformer | 0.03 | 0.11 | 0.20 | 0.69 | 1.38x | 0.2104 | 3.2186 |
+
+The 500-sample pilot showed that FT-Transformer often increased positive-pair similarity, but this did not always translate into better top-k retrieval. This motivated the larger 1000- and 2000-sample runs, where sample-size effects became clearer.
+
 ### Final 10-Epoch Results
 
 | Setup | Samples | Encoder | R@1 | R@5 | R@10 | R@50 | Lift@50 | Pos Sim | Train Loss |
@@ -107,7 +124,7 @@ The strongest lesson from this experiment is that representation learning perfor
 ## 7. Limitations
 
 - The dataset is synthetic and does not represent clinical performance.
-- The generated images are artificial patterns, not medical images.
+- The generated images are controlled synthetic visual patterns rather than clinical medical images, so the results should be interpreted as method-behavior analysis rather than     clinical performance.
 - Experiments were limited to 10 epochs.
 - The goal is method behavior analysis, not clinical diagnosis or deployment.
 - More seeds should be tested before making strong claims about model superiority.

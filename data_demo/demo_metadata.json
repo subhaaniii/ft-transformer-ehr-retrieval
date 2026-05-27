@@ -1,0 +1,7 @@
+{
+  "mode": "linear",
+  "n_samples": 500,
+  "noise_rate": 0.0,
+  "seed": 42,
+  "description": "Synthetic controlled data for method comparison. Images are generated patterns/noise, not medical images."
+}

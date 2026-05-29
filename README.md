@@ -81,51 +81,45 @@ Main observations:
 
 The main lesson is that architecture, data structure, sample size, and pairing quality must be evaluated together.
 
-## Demo-space visualization
+## Demo-Space Visualization
 
-The figures below show the synthetic input spaces used in this repository. These are **pre-training diagnostics**, not learned embedding visualizations.
+The plots below show the synthetic input spaces used in this repository. These are **pre-training diagnostics**, not learned FT-Transformer embeddings.
 
 <table>
   <tr>
-    <td align="center">
+    <th>EHR profile space</th>
+    <th>EHR train/eval split</th>
+    <th>Synthetic CXR image space</th>
+  </tr>
+  <tr>
+    <td width="33%">
       <a href="figures/ehr_profile_space.png">
-        <img src="figures/ehr_profile_space.png" width="300"/>
+        <img src="figures/ehr_profile_space.png" alt="EHR profile space" width="100%">
       </a>
-      <br/>
-      <sub><b>EHR profile space</b></sub>
     </td>
-    <td align="center">
+    <td width="33%">
       <a href="figures/ehr_pool_split_space.png">
-        <img src="figures/ehr_pool_split_space.png" width="300"/>
+        <img src="figures/ehr_pool_split_space.png" alt="EHR train/eval split" width="100%">
       </a>
-      <br/>
-      <sub><b>EHR train/eval split</b></sub>
     </td>
-    <td align="center">
+    <td width="33%">
       <a href="figures/cxr_image_space.png">
-        <img src="figures/cxr_image_space.png" width="300"/>
+        <img src="figures/cxr_image_space.png" alt="Synthetic CXR image space" width="100%">
       </a>
-      <br/>
-      <sub><b>Synthetic CXR image space</b></sub>
     </td>
   </tr>
 </table>
 
-These plots are qualitative diagnostics.
-
-- The **EHR profile space** summarizes the synthetic patient table after preprocessing and PCA projection.
-- The **EHR split plot** shows how Pool A (evaluation) and Pool B (training) are distributed across the profile space.
-- The **synthetic CXR image space** shows the image-side structure before retrieval training.
-
-The main conclusions of the project should still be based on retrieval results and controlled experiments rather than on visual inspection alone.
-
-### How to read the figures
+The first two panels use the same EHR PCA coordinates but highlight different information: the first shows clinical feature structure, while the second shows whether Pool A and Pool B are spread across the same EHR space.
 
 | Panel | What to notice |
 |---|---|
-| **EHR profile space** | Nearby points represent structurally similar patient profiles in the synthetic tabular feature space. |
-| **EHR train/eval split** | Pool A and Pool B should be spread across the same overall space, rather than being isolated into separate regions. |
-| **Synthetic CXR image space** | If the image-side distribution shows broad structure rather than pure random scatter, the retrieval task has meaningful input variation to learn from. |
+| **EHR profile space** | Nearby points represent structurally similar synthetic patient profiles. Color indicates hypertension status, and marker shape indicates sex. |
+| **EHR train/eval split** | Pool A and Pool B should be mixed across the same broad EHR space, rather than forming isolated train/eval regions. This helps check that the split is not visually biased. |
+| **Synthetic CXR image space** | The image-side inputs show visible structure before training, giving the retrieval model meaningful variation to learn from. |
+
+These plots are qualitative diagnostics. The main conclusions should be based on retrieval results and controlled experiments rather than visual inspection alone.
+
 
 ## Repository Structure
 

@@ -118,6 +118,7 @@ def scatter_by_pool(ax, df, title):
     ax.set_xlabel("PCA 1")
     ax.set_ylabel("PCA 2")
     ax.grid(alpha=0.25)
+    ax.legend(fontsize=8, loc="best")
 
 
 def scatter_ehr_clinical(ax, ehr_df):

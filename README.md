@@ -4,6 +4,12 @@ A controlled method-study comparing an FT-Transformer-style tabular encoder with
 
 The project is inspired by multimodal medical representation learning, but the public version uses controlled synthetic data instead of restricted clinical data. The goal is to study method behavior under known data-generating conditions, not to make clinical claims.
 
+## Research Report
+
+A paper-style summary of this project is available here:
+
+[Read the paper-style report](docs/paper_style_report.md)
+
 ## Research Question
 
 Can an FT-Transformer-style tabular encoder improve retrieval alignment compared with a simpler MLP encoder when the data contains feature interactions, noisy pairings, or larger sample sizes?

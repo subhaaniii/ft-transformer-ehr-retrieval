@@ -26,20 +26,15 @@ This repository demonstrates:
 
 ## Methods Compared
 
-| Method | Description |
-|---|---|
-| MLP EHR Encoder | A baseline feed-forward encoder for transformed tabular features |
-| FT-Transformer EHR Encoder | A feature-tokenizer + Transformer encoder that applies self-attention over tabular feature tokens |
+This benchmark compares a baseline MLP EHR encoder with an FT-Transformer-style EHR encoder inside the same contrastive retrieval pipeline.
 
-Both methods use the same symmetric InfoNCE contrastive loss and retrieval evaluation pipeline.
+For the full method description, including encoder design and comparison setup, see the [paper-style report](docs/paper_style_report.md#4-method).
 
 ## Related Work
 
-This repository includes an FT-Transformer-style encoder for tabular EHR-like features. The main inspiration is the FT-Transformer approach studied by Gorishniy et al. in *Revisiting Deep Learning Models for Tabular Data*, where feature tokenization and Transformer layers were evaluated as a strong deep learning baseline for tabular prediction tasks.
+This project is inspired by FT-Transformer-style tabular encoding, TabTransformer, and contrastive retrieval for multimodal representation learning.
 
-The broader idea of using Transformer-based architectures for tabular data is also related to TabTransformer, which applies self-attention to learn contextual embeddings for categorical features.
-
-These works motivate the comparison in this repository: a simple MLP encoder is tested against a Transformer-style tabular encoder under controlled retrieval conditions.
+For the full related-work discussion and references, see the [paper-style report](docs/paper_style_report.md#13-related-work).
 
 ## Dataset Setup
 
@@ -54,6 +49,7 @@ Three dataset modes are included:
 | Noisy | Tests robustness when a fraction of image-EHR pairings are intentionally corrupted |
 
 The generated images are controlled synthetic visual patterns rather than clinical medical images. This makes the benchmark reproducible, privacy-safe, and suitable for method-behavior analysis.
+For full setup details, see the [paper-style report](docs/paper_style_report.md#5-dataset-and-experimental-setup).
 
 ## Experiments
 
@@ -74,18 +70,7 @@ Metrics reported:
 - positive-pair cosine similarity
 - training loss
 
-## Key Findings
-
-FT-Transformer did not universally outperform the MLP. Its behavior depended on the data setup.
-
-Main observations:
-
-- In linear settings, the MLP was already highly competitive.
-- In the 1000-sample interaction setup, FT-Transformer improved retrieval over MLP.
-- In noisy-pair settings, both models degraded, showing that better architecture cannot fully compensate for weak pair quality.
-- FT-Transformer often improved positive-pair similarity, but higher similarity did not always translate into better top-k retrieval.
-
-The main lesson is that architecture, data structure, sample size, and pairing quality must be evaluated together.
+---
 
 ## Demo-Space Visualization
 
@@ -126,6 +111,20 @@ The first two panels use the same EHR PCA coordinates but highlight different in
 
 These plots are qualitative diagnostics. The main conclusions should be based on retrieval results and controlled experiments rather than visual inspection alone.
 
+---
+
+## Key Findings
+
+FT-Transformer did not universally outperform the MLP. Its behavior depended on the data setup.
+
+Main observations:
+
+- In linear settings, the MLP was already highly competitive.
+- In the 1000-sample interaction setup, FT-Transformer improved retrieval over MLP.
+- In noisy-pair settings, both models degraded, showing that better architecture cannot fully compensate for weak pair quality.
+- FT-Transformer often improved positive-pair similarity, but higher similarity did not always translate into better top-k retrieval.
+
+The main lesson is that architecture, data structure, sample size, and pairing quality must be evaluated together.
 
 ## Repository Structure
 

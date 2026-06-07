@@ -36,40 +36,6 @@ This project is inspired by FT-Transformer-style tabular encoding, TabTransforme
 
 For the full related-work discussion and references, see the [paper-style report](docs/paper_style_report.md#13-related-work).
 
-## Dataset Setup
-
-The public repository uses controlled synthetic multimodal data.
-
-Three dataset modes are included:
-
-| Setup | Purpose |
-|---|---|
-| Linear | Tests whether a simple MLP is already sufficient when the signal is mostly linear |
-| Interaction | Tests whether FT-Transformer helps when feature interactions matter |
-| Noisy | Tests robustness when a fraction of image-EHR pairings are intentionally corrupted |
-
-The generated images are controlled synthetic visual patterns rather than clinical medical images. This makes the benchmark reproducible, privacy-safe, and suitable for method-behavior analysis.
-For full setup details, see the [paper-style report](docs/paper_style_report.md#5-dataset-and-experimental-setup).
-
-## Experiments
-
-The final benchmark compares:
-
-- encoder type: MLP vs FT-Transformer
-- dataset mode: linear, interaction, noisy
-- sample size: 500 pilot, 1000, 2000
-- training duration: 10 epochs for the main benchmark
-
-Metrics reported:
-
-- Recall@1
-- Recall@5
-- Recall@10
-- Recall@50
-- lift over random baseline
-- positive-pair cosine similarity
-- training loss
-
 ---
 
 ## Demo-Space Visualization
@@ -110,6 +76,42 @@ The first two panels use the same EHR PCA coordinates but highlight different in
 | **Synthetic CXR image space** | The image-side inputs show visible structure before training, giving the retrieval model meaningful variation to learn from. |
 
 These plots are qualitative diagnostics. The main conclusions should be based on retrieval results and controlled experiments rather than visual inspection alone.
+
+---
+
+## Dataset Setup
+
+The public repository uses controlled synthetic multimodal data.
+
+Three dataset modes are included:
+
+| Setup | Purpose |
+|---|---|
+| Linear | Tests whether a simple MLP is already sufficient when the signal is mostly linear |
+| Interaction | Tests whether FT-Transformer helps when feature interactions matter |
+| Noisy | Tests robustness when a fraction of image-EHR pairings are intentionally corrupted |
+
+The generated images are controlled synthetic visual patterns rather than clinical medical images. This makes the benchmark reproducible, privacy-safe, and suitable for method-behavior analysis.
+For full setup details, see the [paper-style report](docs/paper_style_report.md#5-dataset-and-experimental-setup).
+
+## Experiments
+
+The final benchmark compares:
+
+- encoder type: MLP vs FT-Transformer
+- dataset mode: linear, interaction, noisy
+- sample size: 500 pilot, 1000, 2000
+- training duration: 10 epochs for the main benchmark
+
+Metrics reported:
+
+- Recall@1
+- Recall@5
+- Recall@10
+- Recall@50
+- lift over random baseline
+- positive-pair cosine similarity
+- training loss
 
 ---
 

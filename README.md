@@ -12,7 +12,7 @@ A paper-style summary of this project is available here:
 
 ## Research Question
 
-Can an FT-Transformer-style tabular encoder improve retrieval alignment compared with a simpler MLP encoder when the data contains feature interactions, noisy pairings, or larger sample sizes?
+> Can an FT-Transformer-style tabular encoder improve retrieval alignment compared with a simpler MLP encoder when the data contains feature interactions, noisy pairings, or larger sample sizes?
 
 ## What This Repository Shows
 

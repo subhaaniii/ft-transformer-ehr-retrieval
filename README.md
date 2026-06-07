@@ -124,7 +124,7 @@ Main observations:
 - In noisy-pair settings, both models degraded, showing that better architecture cannot fully compensate for weak pair quality.
 - FT-Transformer often improved positive-pair similarity, but higher similarity did not always translate into better top-k retrieval.
 
-The main lesson is that architecture, data structure, sample size, and pairing quality must be evaluated together.
+For the full findings and interpretation, see the [paper-style report](docs/paper_style_report.md#9-key-findings).
 
 ## Repository Structure
 
@@ -191,15 +191,16 @@ python src/train.py --ehr-encoder ftt --epochs 10 --batch-size 32 --num-workers 
 - [Reproducibility notes](docs/reproducibility_notes.md)
 - [Controlled experiment results](experiments/results_summary.md)
 
+---
+
 ## References
 
-- Yury Gorishniy, Ivan Rubachev, Valentin Khrulkov, and Artem Babenko. *Revisiting Deep Learning Models for Tabular Data*. NeurIPS 2021.
-- Xin Huang, Ashish Khetan, Milan Cvitkovic, and Zohar Karnin. *TabTransformer: Tabular Data Modeling Using Contextual Embeddings*. arXiv, 2020.
+References are included in the [paper-style report](docs/paper_style_report.md).
 
 ## Limitations
 
-This repository is a controlled method-analysis project rather than a clinical deployment study. The benchmark uses synthetic multimodal data so that the data structure, pairing quality, feature interactions, and sample-size effects can be studied under known conditions.
+This repository is a controlled method-analysis project rather than a clinical deployment study. The benchmark uses synthetic multimodal data so that data structure, pairing quality, feature interactions, and sample-size effects can be studied under known conditions.
 
-The visual inputs are controlled synthetic patterns rather than clinical medical images. Therefore, the results should be interpreted as evidence of experimental design, retrieval-evaluation reasoning, and model-behavior analysis, not as clinical performance or diagnostic capability.
+For the full limitations and future work discussion, see the [paper-style report](docs/paper_style_report.md#10-limitations).
 
 A stronger follow-up would include repeated random seeds, longer training, additional sample-size sweeps, and evaluation on authorized real-world datasets under proper data-use restrictions.

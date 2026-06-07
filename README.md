@@ -202,5 +202,3 @@ References are included in the [paper-style report](docs/paper_style_report.md).
 This repository is a controlled method-analysis project rather than a clinical deployment study. The benchmark uses synthetic multimodal data so that data structure, pairing quality, feature interactions, and sample-size effects can be studied under known conditions.
 
 For the full limitations and future work discussion, see the [paper-style report](docs/paper_style_report.md#10-limitations).
-
-A stronger follow-up would include repeated random seeds, longer training, additional sample-size sweeps, and evaluation on authorized real-world datasets under proper data-use restrictions.
